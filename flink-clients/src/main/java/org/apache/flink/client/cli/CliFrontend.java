@@ -212,6 +212,7 @@ public class CliFrontend {
 	 *
 	 * @param args Command line arguments for the run action.
 	 */
+	//todo 核心run方法
 	protected void run(String[] args) throws Exception {
 		LOG.info("Running 'run' command.");
 
@@ -1026,23 +1027,29 @@ public class CliFrontend {
 	public static void main(final String[] args) {
 		EnvironmentInformation.logEnvironmentInfo(LOG, "Command Line Client", args);
 
+		// todo 获取flink conf路径
 		// 1. find the configuration directory
 		final String configurationDirectory = getConfigurationDirectoryFromEnv();
 
+		// todo 加载配置
 		// 2. load the global configuration
 		final Configuration configuration = GlobalConfiguration.loadConfiguration(configurationDirectory);
 
+		// todo 加载自定义命令行
+		// todo 依次添加GenericCli、 YarnSessionCli、DefaultCli
 		// 3. load the custom command lines
 		final List<CustomCommandLine> customCommandLines = loadCustomCommandLines(
 			configuration,
 			configurationDirectory);
 
 		try {
+			//todo 创建客户端
 			final CliFrontend cli = new CliFrontend(
 				configuration,
 				customCommandLines);
 
 			SecurityUtils.install(new SecurityConfiguration(cli.configuration));
+			//todo 执行客户端
 			int retCode = SecurityUtils.getInstalledContext()
 					.runSecured(() -> cli.parseAndRun(args));
 			System.exit(retCode);
@@ -1098,6 +1105,7 @@ public class CliFrontend {
 		config.setInteger(RestOptions.PORT, address.getPort());
 	}
 
+	// todo: 依次添加GenericCli、 YarnSessionCli、DefaultCli
 	public static List<CustomCommandLine> loadCustomCommandLines(Configuration configuration, String configurationDirectory) {
 		List<CustomCommandLine> customCommandLines = new ArrayList<>();
 		customCommandLines.add(new GenericCLI(configuration, configurationDirectory));

@@ -411,6 +411,7 @@ under the License.
 						</goals>
 						<configuration>
 							<protocVersion>${protoc.version}</protocVersion>
+							<protocArtifact>com.google.protobuf:protoc:3.11.1:exe:osx-x86_64</protocArtifact>
 							<inputDirectories>
 								<include>pyflink/proto</include>
 							</inputDirectories>
